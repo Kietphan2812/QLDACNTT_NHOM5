@@ -1,0 +1,4 @@
+# Git Ignore Rules
+.vscode/
+*.log
+scratch/
