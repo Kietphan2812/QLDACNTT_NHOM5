@@ -189,11 +189,10 @@ class HRApp {
       });
 
       if (res.ok) {
-        const result = await res.json();
         this.showToast(`Đăng ký thành công tài khoản ${regData.email} (${this.getRoleTitle(regData.vai_tro)}) vào SQL Server!`, 'success');
         await window.db.syncFromSql();
         
-        // Auto login with selected role
+        // Auto login
         this.currentUser = {
           email: regData.email,
           name: `${regData.ho} ${regData.ten}`,
@@ -267,15 +266,6 @@ class HRApp {
                 (this.currentUser.role === 'MANAGER' ? 'fa-user-gear' : 'fa-user'));
       badgeEl.innerHTML = `<i class="fa-solid ${icon}"></i> ${this.currentUser.roleTitle}`;
     }
-
-    document.querySelectorAll('[data-role-hide]').forEach(el => {
-      const hiddenRoles = el.getAttribute('data-role-hide').split(',');
-      if (hiddenRoles.includes(this.currentUser.role)) {
-        el.style.display = 'none';
-      } else {
-        el.style.display = '';
-      }
-    });
   }
 
   formatDate(val) {
@@ -323,12 +313,6 @@ class HRApp {
   }
 
   navigateTo(viewId) {
-    // RBAC Security Check: EMPLOYEE cannot access view-accounts
-    if (viewId === 'view-accounts' && this.currentUser && this.currentUser.role === 'EMPLOYEE') {
-      this.showToast('Tài khoản Nhân Viên không có quyền xem Quản Lý Tài Khoản! (Chỉ dành cho Admin & Giám Đốc)', 'warning');
-      return;
-    }
-
     this.currentView = viewId;
 
     document.querySelectorAll('.sidebar .nav-item').forEach(el => {
@@ -572,13 +556,6 @@ class HRApp {
   // 1. CORE HR & TAI_KHOAN TABLE RENDERER
   // ============================================================================
   renderAccounts() {
-    // RBAC Security Guard
-    if (this.currentUser && this.currentUser.role === 'EMPLOYEE') {
-      const tbody = document.querySelector('#table-accounts tbody');
-      if (tbody) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--danger); padding:24px; font-weight:700;"><i class="fa-solid fa-lock"></i> Bạn không có quyền truy cập dữ liệu Quản Lý Tài Khoản (Chỉ dành cho Admin & Giám đốc)</td></tr>`;
-      return;
-    }
-
     const accounts = window.db.get('tai_khoan');
     const emps = window.db.get('nhan_vien');
 
@@ -619,10 +596,6 @@ class HRApp {
     const depts = window.db.get('phong_ban');
     const jobs = window.db.get('chuc_danh');
 
-    if (this.currentUser && this.currentUser.role === 'EMPLOYEE' && this.currentUser.empId) {
-      emps = emps.filter(e => e.nhan_vien_id === this.currentUser.empId);
-    }
-
     if (filterDept) emps = emps.filter(e => e.phong_ban_id == filterDept);
     if (filterStatus) emps = emps.filter(e => e.trang_thai === filterStatus);
     if (searchVal) {
@@ -651,8 +624,6 @@ class HRApp {
       else if (emp.trang_thai === 'NGHI_PHEP') statusBadge = '<span class="badge badge-warning"><span class="badge-dot"></span>Nghỉ Phép</span>';
       else statusBadge = '<span class="badge badge-danger"><span class="badge-dot"></span>Đã Nghỉ</span>';
 
-      const canEdit = this.currentUser && (this.currentUser.role === 'ADMIN' || this.currentUser.role === 'CEO');
-
       return `
         <tr>
           <td><strong style="color:var(--primary);">${emp.ma_nhan_vien}</strong></td>
@@ -665,10 +636,8 @@ class HRApp {
           <td>${this.formatDate(emp.ngay_vao_lam)}</td>
           <td>${statusBadge}</td>
           <td>
-            ${canEdit ? `
-              <button class="btn btn-sm btn-secondary" onclick="window.app.editEmployee('${emp.nhan_vien_id}')" title="Chỉnh sửa"><i class="fa-solid fa-pen"></i></button>
-              <button class="btn btn-sm btn-danger" onclick="window.app.deleteEmployee('${emp.nhan_vien_id}')" title="Xóa"><i class="fa-solid fa-trash"></i></button>
-            ` : '<span class="badge badge-neutral"><i class="fa-solid fa-lock"></i> Xem</span>'}
+            <button class="btn btn-sm btn-secondary" onclick="window.app.editEmployee('${emp.nhan_vien_id}')" title="Chỉnh sửa"><i class="fa-solid fa-pen"></i></button>
+            <button class="btn btn-sm btn-danger" onclick="window.app.deleteEmployee('${emp.nhan_vien_id}')" title="Xóa"><i class="fa-solid fa-trash"></i></button>
           </td>
         </tr>
       `;
@@ -767,7 +736,6 @@ class HRApp {
     if (tbody) {
       tbody.innerHTML = depts.map(d => {
         const parent = depts.find(p => p.phong_ban_id == d.phong_ban_id_cha || p.phong_ban_id == d.phong_ban_cha_id);
-        const canEdit = this.currentUser && (this.currentUser.role === 'ADMIN' || this.currentUser.role === 'CEO');
         return `
           <tr>
             <td>${d.phong_ban_id}</td>
@@ -776,7 +744,7 @@ class HRApp {
             <td>${parent ? parent.ten_phong_ban : '<em style="color:var(--text-muted)">Cấp Cao Trực Thuộc</em>'}</td>
             <td>${this.formatDate(d.ngay_tao)}</td>
             <td>
-              ${canEdit ? `<button class="btn btn-sm btn-secondary" onclick="window.app.openDepartmentModal(${d.phong_ban_id})"><i class="fa-solid fa-pen"></i></button>` : '<span class="badge badge-neutral"><i class="fa-solid fa-lock"></i> Xem</span>'}
+              <button class="btn btn-sm btn-secondary" onclick="window.app.openDepartmentModal(${d.phong_ban_id})"><i class="fa-solid fa-pen"></i></button>
             </td>
           </tr>
         `;
@@ -885,7 +853,6 @@ class HRApp {
         const dept = depts.find(d => d.phong_ban_id == p.phong_ban_id);
         let badge = p.trang_thai === 'DANG_TIN' ? '<span class="badge badge-success"><span class="badge-dot"></span>Đang Đăng</span>' :
                    (p.trang_thai === 'NHAP' ? '<span class="badge badge-warning"><span class="badge-dot"></span>Bản Nháp</span>' : '<span class="badge badge-neutral">Đã Đóng</span>');
-        const canManage = this.currentUser && (this.currentUser.role === 'ADMIN' || this.currentUser.role === 'CEO' || this.currentUser.role === 'MANAGER');
         return `
           <tr>
             <td>${p.tin_tuyen_dung_id}</td>
@@ -897,7 +864,7 @@ class HRApp {
             <td>${this.formatDate(p.ngay_het_han)}</td>
             <td>${badge}</td>
             <td>
-              ${canManage ? `<button class="btn btn-sm btn-secondary" onclick="window.app.toggleJobPostingStatus(${p.tin_tuyen_dung_id})"><i class="fa-solid fa-repeat"></i> Đổi Trạng Thái</button>` : '<span class="badge badge-neutral">Xem</span>'}
+              <button class="btn btn-sm btn-secondary" onclick="window.app.toggleJobPostingStatus(${p.tin_tuyen_dung_id})"><i class="fa-solid fa-repeat"></i> Đổi Trạng Thái</button>
             </td>
           </tr>
         `;
@@ -963,8 +930,6 @@ class HRApp {
         let resBadge = i.ket_qua === 'DAT' ? '<span class="badge badge-success">ĐẠT (Passed)</span>' :
                       (i.ket_qua === 'KHONG_DAT' ? '<span class="badge badge-danger">KHÔNG ĐẠT</span>' : '<span class="badge badge-warning">Chờ Kết Quả</span>');
 
-        const canScore = this.currentUser && (this.currentUser.role === 'ADMIN' || this.currentUser.role === 'MANAGER' || this.currentUser.role === 'CEO');
-
         return `
           <tr>
             <td>${i.phong_van_id}</td>
@@ -975,10 +940,8 @@ class HRApp {
             <td>${i.danh_gia || '<em>Chưa ghi nhận đánh giá</em>'}</td>
             <td>${resBadge}</td>
             <td>
-              ${canScore ? `
-                <button class="btn btn-sm btn-success" onclick="window.app.recordInterviewResult(${i.phong_van_id}, 'DAT')"><i class="fa-solid fa-check"></i> Đạt</button>
-                <button class="btn btn-sm btn-danger" onclick="window.app.recordInterviewResult(${i.phong_van_id}, 'KHONG_DAT')"><i class="fa-solid fa-xmark"></i> Không Đạt</button>
-              ` : '<span class="badge badge-neutral">Xem</span>'}
+              <button class="btn btn-sm btn-success" onclick="window.app.recordInterviewResult(${i.phong_van_id}, 'DAT')"><i class="fa-solid fa-check"></i> Đạt</button>
+              <button class="btn btn-sm btn-danger" onclick="window.app.recordInterviewResult(${i.phong_van_id}, 'KHONG_DAT')"><i class="fa-solid fa-xmark"></i> Không Đạt</button>
             </td>
           </tr>
         `;
@@ -987,10 +950,6 @@ class HRApp {
   }
 
   moveCandidateNextStage(hoSoId, currentStage) {
-    if (this.currentUser && this.currentUser.role === 'EMPLOYEE') {
-      this.showToast('Bạn không có quyền chuyển bước hồ sơ ứng viên!', 'warning');
-      return;
-    }
     const flow = ['DA_NHAN', 'SO_TUYEN', 'PHONG_VAN', 'DE_NGHI', 'TU_CHUOI'];
     const nextIdx = (flow.indexOf(currentStage) + 1) % flow.length;
     const nextStage = flow[nextIdx];
@@ -1049,10 +1008,6 @@ class HRApp {
     let enrollments = window.db.get('dang_ky_dao_tao');
     const emps = window.db.get('nhan_vien');
 
-    if (this.currentUser && this.currentUser.role === 'EMPLOYEE' && this.currentUser.empId) {
-      enrollments = enrollments.filter(e => e.nhan_vien_id === this.currentUser.empId);
-    }
-
     const tbodyCourses = document.querySelector('#table-courses tbody');
     if (tbodyCourses) {
       tbodyCourses.innerHTML = courses.map(c => {
@@ -1079,7 +1034,6 @@ class HRApp {
         const cls = classes.find(l => l.lich_dao_tao_id == e.lich_dao_tao_id);
         const course = cls ? courses.find(c => c.khoa_hoc_id == cls.khoa_hoc_id) : null;
         const emp = emps.find(nv => nv.nhan_vien_id === e.nhan_vien_id);
-        const canIssue = this.currentUser && (this.currentUser.role === 'ADMIN' || this.currentUser.role === 'CEO' || this.currentUser.role === 'MANAGER');
 
         return `
           <tr>
@@ -1090,7 +1044,7 @@ class HRApp {
             <td><code style="background:var(--bg-tertiary); padding:2px 6px; border-radius:4px;">${e.ma_chung_chi || 'Chưa cấp'}</code></td>
             <td>${this.formatDate(e.ngay_cap_chung_chi)}</td>
             <td>
-              ${!e.ma_chung_chi && canIssue ? `<button class="btn btn-sm btn-success" onclick="window.app.issueCertificate(${e.dang_ky_id})"><i class="fa-solid fa-certificate"></i> Cấp Chứng Chỉ</button>` : (e.ma_chung_chi ? '<span class="badge badge-success"><i class="fa-solid fa-check"></i> Đã Cấp</span>' : '<span class="badge badge-warning">Đang Học</span>')}
+              ${!e.ma_chung_chi ? `<button class="btn btn-sm btn-success" onclick="window.app.issueCertificate(${e.dang_ky_id})"><i class="fa-solid fa-certificate"></i> Cấp Chứng Chỉ</button>` : '<span class="badge badge-success"><i class="fa-solid fa-check"></i> Đã Cấp</span>'}
             </td>
           </tr>
         `;
@@ -1119,11 +1073,6 @@ class HRApp {
     let objectives = window.db.get('muc_tieu_danh_gia');
     let results = window.db.get('ket_qua_danh_gia');
     const emps = window.db.get('nhan_vien');
-
-    if (this.currentUser && this.currentUser.role === 'EMPLOYEE' && this.currentUser.empId) {
-      objectives = objectives.filter(o => o.nhan_vien_id === this.currentUser.empId);
-      results = results.filter(r => r.nhan_vien_id === this.currentUser.empId);
-    }
 
     const tbodyObj = document.querySelector('#table-kpi-objectives tbody');
     if (tbodyObj) {
@@ -1156,7 +1105,6 @@ class HRApp {
       tbodyRes.innerHTML = results.map(r => {
         const emp = emps.find(e => e.nhan_vien_id === r.nhan_vien_id);
         let badge = r.trang_thai === 'PHE_DUYET' ? '<span class="badge badge-success">Đã Phê Duyệt</span>' : '<span class="badge badge-warning">Đã Nộp (Chờ Duyệt)</span>';
-        const canApprove = this.currentUser && (this.currentUser.role === 'ADMIN' || this.currentUser.role === 'CEO' || this.currentUser.role === 'MANAGER');
 
         return `
           <tr>
@@ -1165,7 +1113,7 @@ class HRApp {
             <td><strong style="color:var(--primary); font-size:16px;">${r.diem_chinh_thuc} đ</strong></td>
             <td>${badge}</td>
             <td>
-              ${r.trang_thai !== 'PHE_DUYET' && canApprove ? `<button class="btn btn-sm btn-primary" onclick="window.app.approveKpiResult(${r.danh_gia_id})"><i class="fa-solid fa-circle-check"></i> Phê Duyệt</button>` : '<span class="badge badge-neutral"><i class="fa-solid fa-check-double"></i> Hoàn tất</span>'}
+              ${r.trang_thai !== 'PHE_DUYET' ? `<button class="btn btn-sm btn-primary" onclick="window.app.approveKpiResult(${r.danh_gia_id})"><i class="fa-solid fa-circle-check"></i> Phê Duyệt</button>` : '<span class="badge badge-neutral"><i class="fa-solid fa-check-double"></i> Hoàn tất</span>'}
             </td>
           </tr>
         `;
@@ -1188,10 +1136,6 @@ class HRApp {
     const periods = window.db.get('ky_tinh_luong');
     const emps = window.db.get('nhan_vien');
     const depts = window.db.get('phong_ban');
-
-    if (this.currentUser && this.currentUser.role === 'EMPLOYEE' && this.currentUser.empId) {
-      slips = slips.filter(s => s.nhan_vien_id === this.currentUser.empId);
-    }
 
     const periodSelect = document.getElementById('filter-payroll-period');
     if (periodSelect) {
@@ -1241,10 +1185,6 @@ class HRApp {
   }
 
   calculatePayrollCurrentMonth() {
-    if (this.currentUser && (this.currentUser.role === 'EMPLOYEE' || this.currentUser.role === 'MANAGER')) {
-      this.showToast('Chỉ có HR Admin hoặc Giám đốc mới có quyền tính lương!', 'warning');
-      return;
-    }
     const emps = window.db.get('nhan_vien');
     const contracts = window.db.get('luong_hop_dong');
 
@@ -1377,11 +1317,6 @@ class HRApp {
     let balances = window.db.get('quy_phep_nam');
     const emps = window.db.get('nhan_vien');
 
-    if (this.currentUser && this.currentUser.role === 'EMPLOYEE' && this.currentUser.empId) {
-      requests = requests.filter(r => r.nhan_vien_id === this.currentUser.empId);
-      balances = balances.filter(b => b.nhan_vien_id === this.currentUser.empId);
-    }
-
     const tbodyReq = document.querySelector('#table-leave-requests tbody');
     if (tbodyReq) {
       tbodyReq.innerHTML = requests.map(r => {
@@ -1392,7 +1327,6 @@ class HRApp {
                    (r.trang_thai === 'TU_CHUOI' ? '<span class="badge badge-danger"><span class="badge-dot"></span>Từ Chối</span>' : '<span class="badge badge-warning"><span class="badge-dot"></span>Chờ Duyệt</span>');
 
         let typeText = r.loai_nghi_phep === 'PHEP_NAM' ? 'Phép Năm' : (r.loai_nghi_phep === 'NGHI_OM' ? 'Nghỉ Ốm' : 'Không Lương');
-        const canProcessLeave = this.currentUser && (this.currentUser.role === 'ADMIN' || this.currentUser.role === 'MANAGER' || this.currentUser.role === 'CEO');
 
         return `
           <tr>
@@ -1406,7 +1340,7 @@ class HRApp {
             <td>${badge}</td>
             <td>${mgr ? `${mgr.ho} ${mgr.ten}` : '---'}</td>
             <td>
-              ${r.trang_thai === 'CHO_DUYET' && canProcessLeave ? `
+              ${r.trang_thai === 'CHO_DUYET' ? `
                 <button class="btn btn-sm btn-success" onclick="window.app.processLeaveRequest(${r.don_nghi_id}, 'DA_DUYET')"><i class="fa-solid fa-check"></i> Duyệt</button>
                 <button class="btn btn-sm btn-danger" onclick="window.app.processLeaveRequest(${r.don_nghi_id}, 'TU_CHUOI')"><i class="fa-solid fa-xmark"></i> Từ Chối</button>
               ` : '<span class="badge badge-neutral">Đã xử lý</span>'}

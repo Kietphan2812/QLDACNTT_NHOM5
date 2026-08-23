@@ -5,15 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HRMaster Pro - Hệ Thống Quản Lý Nhân Sự Toàn Diện</title>
-
+  
   <!-- Google Fonts & Font Awesome Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+  
   <!-- Chart.js for analytics visual charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -38,8 +36,7 @@
       <!-- Login / Register Tabs Switcher -->
       <div class="auth-tabs">
         <div class="auth-tab active" id="auth-tab-login" onclick="window.app.switchAuthMode('login')">1. Đăng Nhập</div>
-        <div class="auth-tab" id="auth-tab-register" onclick="window.app.switchAuthMode('register')">2. Đăng Ký Tài
-          Khoản</div>
+        <div class="auth-tab" id="auth-tab-register" onclick="window.app.switchAuthMode('register')">2. Đăng Ký Tài Khoản</div>
       </div>
 
       <!-- LOGIN FORM -->
@@ -107,7 +104,7 @@
 
   <!-- APP CONTAINER -->
   <div class="app-container">
-
+    
     <!-- SIDEBAR NAVIGATION -->
     <aside class="sidebar">
       <div class="brand-header">
@@ -127,7 +124,7 @@
           <i class="fa-solid fa-id-card"></i>
           <span>Quản Lý Nhân Viên</span>
         </a>
-        <a class="nav-item" data-target="view-accounts" data-role-hide="EMPLOYEE">
+        <a class="nav-item" data-target="view-accounts">
           <i class="fa-solid fa-user-shield"></i>
           <span>Quản Lý Tài Khoản</span>
         </a>
@@ -195,7 +192,7 @@
 
     <!-- MAIN WORKSPACE CONTENT -->
     <div class="main-wrapper">
-
+      
       <!-- TOP HEADER -->
       <header class="top-header">
         <div class="header-left">
@@ -210,10 +207,8 @@
             <input type="text" id="global-search-input" placeholder="Tìm nhân viên, tin tuyển dụng, đơn nghỉ...">
           </div>
 
-          <div
-            style="display: flex; align-items: center; gap: 8px; background: var(--bg-tertiary); padding: 4px 12px; border-radius: var(--radius-full);">
-            <span class="badge badge-success" id="header-user-badge"><i class="fa-solid fa-user"></i> Chưa Đăng
-              Nhập</span>
+          <div style="display: flex; align-items: center; gap: 8px; background: var(--bg-tertiary); padding: 4px 12px; border-radius: var(--radius-full);">
+            <span class="badge badge-success" id="header-user-badge"><i class="fa-solid fa-user"></i> Chưa Đăng Nhập</span>
             <button class="btn btn-sm btn-secondary" onclick="window.app.handleLogout()" title="Đăng Xuất">
               <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất
             </button>
@@ -230,13 +225,13 @@
 
         <!-- VIEW 0: DASHBOARD -->
         <section id="view-dashboard" class="view-page active">
-
+          
           <div class="page-header">
             <div class="page-title-area">
               <h2>Báo Cáo Phân Tích Tổng Quan</h2>
               <p>Thống kê thời gian thực từ View `vw_phan_tich_phong_ban` SQL Server</p>
             </div>
-            <div class="page-actions" data-role-hide="EMPLOYEE">
+            <div class="page-actions">
               <button class="btn btn-primary" onclick="window.app.openEmployeeModal()">
                 <i class="fa-solid fa-plus"></i> Thêm Nhân Viên
               </button>
@@ -245,26 +240,21 @@
 
           <!-- Quick Action Bar -->
           <div class="quick-actions-bar" style="margin-bottom: 24px;">
-            <div class="quick-action-item" onclick="window.app.openEmployeeModal()" data-role-hide="EMPLOYEE">
+            <div class="quick-action-item" onclick="window.app.openEmployeeModal()">
               <div class="quick-action-icon"><i class="fa-solid fa-user-plus"></i></div>
-              <div><strong>Thêm Nhân Viên</strong><br><small style="color:var(--text-muted);">Tạo mới hồ sơ nhân
-                  sự</small></div>
+              <div><strong>Thêm Nhân Viên</strong><br><small style="color:var(--text-muted);">Tạo mới hồ sơ nhân sự</small></div>
             </div>
-            <div class="quick-action-item" onclick="window.app.openJobPostingModal()" data-role-hide="EMPLOYEE">
+            <div class="quick-action-item" onclick="window.app.openJobPostingModal()">
               <div class="quick-action-icon"><i class="fa-solid fa-bullhorn"></i></div>
-              <div><strong>Tạo Tin Tuyển Dụng</strong><br><small style="color:var(--text-muted);">Thu hút ứng viên
-                  mới</small></div>
+              <div><strong>Tạo Tin Tuyển Dụng</strong><br><small style="color:var(--text-muted);">Thu hút ứng viên mới</small></div>
             </div>
-            <div class="quick-action-item" onclick="window.app.calculatePayrollCurrentMonth()"
-              data-role-hide="EMPLOYEE,MANAGER">
+            <div class="quick-action-item" onclick="window.app.calculatePayrollCurrentMonth()">
               <div class="quick-action-icon"><i class="fa-solid fa-calculator"></i></div>
-              <div><strong>Tính Lương Tự Động</strong><br><small style="color:var(--text-muted);">Tính toán phiếu lương
-                  tháng</small></div>
+              <div><strong>Tính Lương Tự Động</strong><br><small style="color:var(--text-muted);">Tính toán phiếu lương tháng</small></div>
             </div>
             <div class="quick-action-item" onclick="window.app.openLeaveRequestModal()">
               <div class="quick-action-icon"><i class="fa-solid fa-calendar-plus"></i></div>
-              <div><strong>Tạo Đơn Nghỉ Phép</strong><br><small style="color:var(--text-muted);">Gửi đơn duyệt
-                  phép</small></div>
+              <div><strong>Tạo Đơn Nghỉ Phép</strong><br><small style="color:var(--text-muted);">Gửi đơn duyệt phép</small></div>
             </div>
           </div>
 
@@ -312,8 +302,7 @@
             <div class="chart-card">
               <div class="chart-card-header">
                 <h3>Phân Tích Nhân Sự Theo Phòng Ban</h3>
-                <span class="badge badge-info"><i class="fa-solid fa-database"></i> SQL View:
-                  vw_phan_tich_phong_ban</span>
+                <span class="badge badge-info"><i class="fa-solid fa-database"></i> SQL View: vw_phan_tich_phong_ban</span>
               </div>
               <div class="chart-canvas-wrapper">
                 <canvas id="chart-dept-analytics"></canvas>
@@ -360,7 +349,7 @@
               <h2>Bảng Quản Lý Nhân Viên (`nhan_vien`)</h2>
               <p>Quản lý thông tin hồ sơ, phòng ban, chức danh & quản lý trực tiếp</p>
             </div>
-            <div class="page-actions" data-role-hide="EMPLOYEE">
+            <div class="page-actions">
               <button class="btn btn-primary" onclick="window.app.openEmployeeModal()">
                 <i class="fa-solid fa-user-plus"></i> Thêm Nhân Viên Mới
               </button>
@@ -384,8 +373,7 @@
 
               <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="search-emp-input" onkeyup="window.app.renderEmployeesTable()"
-                  placeholder="Tìm theo Mã/Họ Tên/Email...">
+                <input type="text" id="search-emp-input" onkeyup="window.app.renderEmployeesTable()" placeholder="Tìm theo Mã/Họ Tên/Email...">
               </div>
             </div>
 
@@ -446,7 +434,7 @@
               <h2>Quản Lý Phòng Ban (`phong_ban`)</h2>
               <p>Sơ đồ tổ chức cây phòng ban & danh mục phòng ban</p>
             </div>
-            <div class="page-actions" data-role-hide="EMPLOYEE">
+            <div class="page-actions">
               <button class="btn btn-primary" onclick="window.app.openDepartmentModal()">
                 <i class="fa-solid fa-plus"></i> Thêm Phòng Ban
               </button>
@@ -519,7 +507,7 @@
               <h2>Quản Lý Tin Tuyển Dụng (`tin_tuyen_dung`)</h2>
               <p>Đăng tin tuyển dụng nhân tài, đặt chỉ tiêu số lượng và mức lương</p>
             </div>
-            <div class="page-actions" data-role-hide="EMPLOYEE">
+            <div class="page-actions">
               <button class="btn btn-primary" onclick="window.app.openJobPostingModal()">
                 <i class="fa-solid fa-bullhorn"></i> Tạo Tin Tuyển Dụng
               </button>
@@ -705,7 +693,7 @@
               <h2>Quản Lý Lương Thưởng & Phiếu Lương (`ky_tinh_luong`, `phieu_luong`, `luong_hop_dong`)</h2>
               <p>Tự động tính Gross -> BHXH -> Thuế TNCN -> Thực Nhận và in Phiếu lương</p>
             </div>
-            <div class="page-actions" data-role-hide="EMPLOYEE,MANAGER">
+            <div class="page-actions">
               <button class="btn btn-success" onclick="window.app.calculatePayrollCurrentMonth()">
                 <i class="fa-solid fa-calculator"></i> Tự Động Tính Lương Tháng Hiện Tại
               </button>
@@ -714,16 +702,14 @@
 
           <div class="tabs-header">
             <div class="tab-item active" data-tab="tab-payroll-slips">Bảng Phiếu Lương Định Kỳ</div>
-            <div class="tab-item" data-tab="tab-payroll-contracts" data-role-hide="EMPLOYEE">Cấu Hình Lương Hợp Đồng
-            </div>
+            <div class="tab-item" data-tab="tab-payroll-contracts">Cấu Hình Lương Hợp Đồng</div>
           </div>
 
           <div id="tab-payroll-slips" class="tab-content">
             <div class="table-card">
               <div class="table-header-toolbar">
                 <div class="table-filter-group">
-                  <select class="form-select" id="filter-payroll-period"
-                    onchange="window.app.renderPayrollTable()"></select>
+                  <select class="form-select" id="filter-payroll-period" onchange="window.app.renderPayrollTable()"></select>
                 </div>
               </div>
               <div class="custom-table-container">
@@ -843,8 +829,7 @@
     <div class="modal-window">
       <div class="modal-header">
         <h3 class="modal-title" id="modal-emp-title">Thêm Nhân Viên Mới</h3>
-        <button class="btn-icon" onclick="window.app.closeModal('modal-employee')"><i
-            class="fa-solid fa-xmark"></i></button>
+        <button class="btn-icon" onclick="window.app.closeModal('modal-employee')"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
         <form id="form-employee" class="form-grid">
@@ -906,8 +891,7 @@
     <div class="modal-window">
       <div class="modal-header">
         <h3 class="modal-title">Thêm / Sửa Phòng Ban</h3>
-        <button class="btn-icon" onclick="window.app.closeModal('modal-department')"><i
-            class="fa-solid fa-xmark"></i></button>
+        <button class="btn-icon" onclick="window.app.closeModal('modal-department')"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
         <form id="form-department" class="form-grid">
@@ -937,8 +921,7 @@
     <div class="modal-window">
       <div class="modal-header">
         <h3 class="modal-title">Tạo Tin Tuyển Dụng</h3>
-        <button class="btn-icon" onclick="window.app.closeModal('modal-job-posting')"><i
-            class="fa-solid fa-xmark"></i></button>
+        <button class="btn-icon" onclick="window.app.closeModal('modal-job-posting')"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
         <form class="form-grid">
@@ -979,8 +962,7 @@
     <div class="modal-window" style="max-width: 650px;">
       <div class="modal-header">
         <h3 class="modal-title">Phiếu Lương Chi Tiết Nhân Viên</h3>
-        <button class="btn-icon" onclick="window.app.closeModal('modal-payslip-view')"><i
-            class="fa-solid fa-xmark"></i></button>
+        <button class="btn-icon" onclick="window.app.closeModal('modal-payslip-view')"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
         <div id="payslip-print-content" class="payslip-container"></div>
@@ -998,8 +980,7 @@
     <div class="modal-window">
       <div class="modal-header">
         <h3 class="modal-title">Tạo Đơn Xin Nghỉ Phép</h3>
-        <button class="btn-icon" onclick="window.app.closeModal('modal-leave-request')"><i
-            class="fa-solid fa-xmark"></i></button>
+        <button class="btn-icon" onclick="window.app.closeModal('modal-leave-request')"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
         <form class="form-grid">
