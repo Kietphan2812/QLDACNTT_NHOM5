@@ -1,0 +1,193 @@
+<!-- ============================================================================
+     INDEX 1: AUTHENTICATION OVERLAY, SIDEBAR NAVIGATION & TOP HEADER
+     ============================================================================ -->
+
+<!-- STRICT LOGIN & REGISTER OVERLAY (AUTHENTICATION GATEKEEPER) -->
+<div id="login-screen" class="login-overlay active">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="login-logo"><i class="fa-solid fa-users-gear"></i></div>
+      <h2>HRMaster <span>Pro</span></h2>
+      <p>Bắt buộc Đăng Ký & Đăng Nhập Tài Khoản SQL Server QLNHANSU</p>
+    </div>
+
+    <!-- Login / Register Tabs Switcher -->
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="auth-tab-login" onclick="window.app.switchAuthMode('login')">1. Đăng Nhập</div>
+      <div class="auth-tab" id="auth-tab-register" onclick="window.app.switchAuthMode('register')">2. Đăng Ký Tài Khoản</div>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <form id="login-form" onsubmit="window.app.handleLogin(event)">
+      <div class="auth-form-group">
+        <label>Email Đăng Nhập *</label>
+        <input type="email" id="login-email" required placeholder="nhap.email@domain.com">
+      </div>
+      <div class="auth-form-group">
+        <label>Mật Khẩu *</label>
+        <input type="password" id="login-password" required placeholder="Nhập mật khẩu">
+      </div>
+
+      <button type="submit" class="btn-auth-submit btn-login-blue">
+        <i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập Hệ Thống
+      </button>
+    </form>
+
+    <!-- REGISTER FORM (Hidden by default) -->
+    <form id="register-form" style="display: none;" onsubmit="window.app.handleRegister(event)">
+      <div class="auth-row-2">
+        <div class="auth-form-group">
+          <label>Họ *</label>
+          <input type="text" id="reg-ho" required placeholder="Nguyễn">
+        </div>
+        <div class="auth-form-group">
+          <label>Tên *</label>
+          <input type="text" id="reg-ten" required placeholder="Văn A">
+        </div>
+      </div>
+
+      <div class="auth-form-group">
+        <label>Email Đăng Ký *</label>
+        <input type="email" id="reg-email" required placeholder="nhap.email@domain.com">
+      </div>
+
+      <div class="auth-form-group">
+        <label>Mật Khẩu Đăng Ký *</label>
+        <input type="password" id="reg-password" required placeholder="Tạo mật khẩu">
+      </div>
+
+      <div class="auth-row-2">
+        <div class="auth-form-group">
+          <label>Số Điện Thoại</label>
+          <input type="text" id="reg-phone" placeholder="0901234567">
+        </div>
+        <div class="auth-form-group">
+          <label>Chức Vụ / Vai Trò *</label>
+          <select id="reg-role" required>
+            <option value="ADMIN">HR Admin (Quản Trị Viên)</option>
+            <option value="CEO">Giám Đốc (CEO)</option>
+            <option value="MANAGER">Trưởng Phòng</option>
+            <option value="EMPLOYEE">Nhân Viên</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-auth-submit btn-register-green">
+        <i class="fa-solid fa-user-plus"></i> Đăng Ký Tài Khoản Vào SQL Server
+      </button>
+    </form>
+
+  </div>
+</div>
+
+<!-- SIDEBAR NAVIGATION -->
+<aside class="sidebar">
+  <div class="brand-header">
+    <div class="brand-logo"><i class="fa-solid fa-users-gear"></i></div>
+    <div class="brand-title">HRMaster <span>Pro</span></div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-title">Tổng quan</div>
+    <a class="nav-item active" data-target="view-dashboard">
+      <i class="fa-solid fa-chart-pie"></i>
+      <span>Dashboard Báo Cáo</span>
+    </a>
+
+    <div class="nav-section-title">0. Dữ liệu chung</div>
+    <a class="nav-item" data-target="view-employees">
+      <i class="fa-solid fa-id-card"></i>
+      <span>Quản Lý Nhân Viên</span>
+    </a>
+    <a class="nav-item" data-target="view-accounts">
+      <i class="fa-solid fa-user-shield"></i>
+      <span>Quản Lý Tài Khoản</span>
+    </a>
+    <a class="nav-item" data-target="view-departments">
+      <i class="fa-solid fa-sitemap"></i>
+      <span>Phòng Ban & Sơ Đồ</span>
+    </a>
+    <a class="nav-item" data-target="view-jobs">
+      <i class="fa-solid fa-briefcase"></i>
+      <span>Chức Danh & Vị Trí</span>
+    </a>
+
+    <div class="nav-section-title">1. Tuyển dụng</div>
+    <a class="nav-item" data-target="view-recruitment-jobs">
+      <i class="fa-solid fa-bullhorn"></i>
+      <span>Tin Tuyển Dụng</span>
+    </a>
+    <a class="nav-item" data-target="view-recruitment-candidates">
+      <i class="fa-solid fa-user-plus"></i>
+      <span>Ứng Viên & Hồ Sơ</span>
+    </a>
+    <a class="nav-item" data-target="view-recruitment-interviews">
+      <i class="fa-solid fa-calendar-check"></i>
+      <span>Lịch Phỏng Vấn</span>
+    </a>
+
+    <div class="nav-section-title">2. Đào tạo</div>
+    <a class="nav-item" data-target="view-training-courses">
+      <i class="fa-solid fa-graduation-cap"></i>
+      <span>Khóa Học & Lịch Đào Tạo</span>
+    </a>
+
+    <div class="nav-section-title">3. Đánh giá hiệu suất</div>
+    <a class="nav-item" data-target="view-kpi-objectives">
+      <i class="fa-solid fa-bullseye"></i>
+      <span>Chỉ Số KPI / OKR</span>
+    </a>
+
+    <div class="nav-section-title">4. Lương thưởng</div>
+    <a class="nav-item" data-target="view-payroll-slips">
+      <i class="fa-solid fa-file-invoice-dollar"></i>
+      <span>Kỳ & Phiếu Lương</span>
+    </a>
+
+    <div class="nav-section-title">5. Quản lý nghỉ phép</div>
+    <a class="nav-item" data-target="view-leave-requests">
+      <i class="fa-solid fa-umbrella-beach"></i>
+      <span>Đơn Xin Nghỉ Phép</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-profile-mini">
+      <div class="avatar" id="sidebar-avatar">--</div>
+      <div class="user-info">
+        <span class="user-name" id="sidebar-user-name">Chưa Đăng Nhập</span>
+        <span class="user-role" id="sidebar-user-role">---</span>
+      </div>
+    </div>
+    <button class="btn-icon" id="theme-toggle-btn" title="Chuyển chế độ Sáng/Tối">
+      <i class="fa-solid fa-moon"></i>
+    </button>
+  </div>
+</aside>
+
+<!-- TOP HEADER -->
+<header class="top-header">
+  <div class="header-left">
+    <div class="header-title-group">
+      <h2 id="current-page-title">Dashboard Tổng Quan</h2>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="global-search-input" placeholder="Tìm nhân viên, tin tuyển dụng, đơn nghỉ...">
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 8px; background: var(--bg-tertiary); padding: 4px 12px; border-radius: var(--radius-full);">
+      <span class="badge badge-success" id="header-user-badge"><i class="fa-solid fa-user"></i> Chưa Đăng Nhập</span>
+      <button class="btn btn-sm btn-secondary" onclick="window.app.handleLogout()" title="Đăng Xuất">
+        <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất
+      </button>
+    </div>
+
+    <button class="btn-icon" id="btn-reset-data" title="Đồng bộ lại CSDL SQL Server">
+      <i class="fa-solid fa-rotate-left"></i>
+    </button>
+  </div>
+</header>

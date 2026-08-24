@@ -1,0 +1,161 @@
+<!-- ============================================================================
+     INDEX 3: QUẢN LÝ NHÂN VIÊN, TÀI KHOẢN, PHÒNG BAN & CHỨC DANH
+     ============================================================================ -->
+
+<!-- VIEW 0.1: QUẢN LÝ NHÂN VIÊN -->
+<section id="view-employees" class="view-page">
+  <div class="page-header">
+    <div class="page-title-area">
+      <h2>Bảng Quản Lý Nhân Viên (`nhan_vien`)</h2>
+      <p>Quản lý thông tin hồ sơ, phòng ban, chức danh & quản lý trực tiếp</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary" onclick="window.app.openEmployeeModal()">
+        <i class="fa-solid fa-user-plus"></i> Thêm Nhân Viên Mới
+      </button>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header-toolbar">
+      <div class="table-filter-group">
+        <select class="form-select" id="filter-emp-dept" onchange="window.app.renderEmployeesTable()">
+          <option value="">-- Tất cả phòng ban --</option>
+        </select>
+
+        <select class="form-select" id="filter-emp-status" onchange="window.app.renderEmployeesTable()">
+          <option value="">-- Tất cả trạng thái --</option>
+          <option value="DANG_LAM">Đang Làm Việc</option>
+          <option value="NGHI_PHEP">Đang Nghỉ Phép</option>
+          <option value="DA_NGHI">Đã Nghỉ Việc</option>
+        </select>
+      </div>
+
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="search-emp-input" onkeyup="window.app.renderEmployeesTable()" placeholder="Tìm theo Mã/Họ Tên/Email...">
+      </div>
+    </div>
+
+    <div class="custom-table-container">
+      <table class="custom-table" id="table-employees">
+        <thead>
+          <tr>
+            <th>Mã NV</th>
+            <th>Họ & Tên</th>
+            <th>Email</th>
+            <th>Số Điện Thoại</th>
+            <th>Phòng Ban</th>
+            <th>Chức Danh</th>
+            <th>Quản Lý Trực Tiếp</th>
+            <th>Ngày Vào Làm</th>
+            <th>Trạng Thái</th>
+            <th>Thao Tác</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- VIEW 0.1.2: QUẢN LÝ TÀI KHOẢN -->
+<section id="view-accounts" class="view-page">
+  <div class="page-header">
+    <div class="page-title-area">
+      <h2>Bảng Quản Lý Tài Khoản (`tai_khoan`)</h2>
+      <p>Danh sách tài khoản đăng nhập, mật khẩu & phân quyền vai trò từ SQL Server `QLNHANSU`</p>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="custom-table-container">
+      <table class="custom-table" id="table-accounts">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Email Đăng Nhập</th>
+            <th>Mật Khẩu</th>
+            <th>Vai Trò (Role)</th>
+            <th>Nhân Viên Liên Kết</th>
+            <th>Ngày Tạo</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- VIEW 0.2: PHÒNG BAN -->
+<section id="view-departments" class="view-page">
+  <div class="page-header">
+    <div class="page-title-area">
+      <h2>Quản Lý Phòng Ban (`phong_ban`)</h2>
+      <p>Sơ đồ tổ chức cây phòng ban & danh mục phòng ban</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary" onclick="window.app.openDepartmentModal()">
+        <i class="fa-solid fa-plus"></i> Thêm Phòng Ban
+      </button>
+    </div>
+  </div>
+
+  <div class="dashboard-grid-2">
+    <div class="table-card">
+      <div class="table-header-toolbar">
+        <h3>Danh Sách Phòng Ban</h3>
+      </div>
+      <div class="custom-table-container">
+        <table class="custom-table" id="table-departments">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Mã PB</th>
+              <th>Tên Phòng Ban</th>
+              <th>Phòng Ban Cha</th>
+              <th>Ngày Tạo</th>
+              <th>Thao Tác</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <h3>Sơ Đồ Cấu Trúc Tổ Chức (Org Tree)</h3>
+      </div>
+      <div id="org-tree-container" class="org-chart-container"></div>
+    </div>
+  </div>
+</section>
+
+<!-- VIEW 0.3: CHỨC DANH -->
+<section id="view-jobs" class="view-page">
+  <div class="page-header">
+    <div class="page-title-area">
+      <h2>Danh Mục Chức Danh / Vị Trí (`chuc_danh`)</h2>
+      <p>Quản lý mã vị trí, chức danh chuyên môn và mô tả nhiệm vụ</p>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="custom-table-container">
+      <table class="custom-table" id="table-jobs">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Mã Chức Danh</th>
+            <th>Tên Chức Danh</th>
+            <th>Mô Tả Công Việc</th>
+            <th>Ngày Tạo</th>
+            <th>Thao Tác</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>

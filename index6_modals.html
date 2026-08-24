@@ -1,0 +1,207 @@
+<!-- ============================================================================
+     INDEX 6: FORM POPUP MODALS & TOAST NOTIFICATIONS
+     ============================================================================ -->
+
+<!-- MODAL: THÊM / SỬA NHÂN VIÊN -->
+<div class="modal-backdrop" id="modal-employee">
+  <div class="modal-window">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-emp-title">Thêm Nhân Viên Mới</h3>
+      <button class="btn-icon" onclick="window.app.closeModal('modal-employee')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <form id="form-employee" class="form-grid">
+        <input type="hidden" id="emp-id">
+        <div class="form-group">
+          <label>Mã Nhân Viên *</label>
+          <input type="text" id="emp-code" required placeholder="NV007">
+        </div>
+        <div class="form-group">
+          <label>Họ *</label>
+          <input type="text" id="emp-last-name" required placeholder="Nguyễn">
+        </div>
+        <div class="form-group">
+          <label>Tên *</label>
+          <input type="text" id="emp-first-name" required placeholder="Văn A">
+        </div>
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" id="emp-email" required placeholder="a.nguyen@hrmaster.vn">
+        </div>
+        <div class="form-group">
+          <label>Số Điện Thoại</label>
+          <input type="text" id="emp-phone" placeholder="0908889999">
+        </div>
+        <div class="form-group">
+          <label>Phòng Ban *</label>
+          <select id="emp-dept-id" required></select>
+        </div>
+        <div class="form-group">
+          <label>Chức Danh *</label>
+          <select id="emp-job-id" required></select>
+        </div>
+        <div class="form-group">
+          <label>Quản Lý Trực Tiếp</label>
+          <select id="emp-manager-id"></select>
+        </div>
+        <div class="form-group">
+          <label>Ngày Vào Làm *</label>
+          <input type="date" id="emp-start-date" required>
+        </div>
+        <div class="form-group">
+          <label>Trạng Thái</label>
+          <select id="emp-status">
+            <option value="DANG_LAM">Đang Làm Việc</option>
+            <option value="NGHI_PHEP">Đang Nghỉ Phép</option>
+            <option value="DA_NGHI">Đã Nghỉ Việc</option>
+          </select>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="window.app.closeModal('modal-employee')">Hủy</button>
+      <button class="btn btn-primary" onclick="window.app.saveEmployee()">Lưu Nhân Viên</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: THÊM / SỬA PHÒNG BAN -->
+<div class="modal-backdrop" id="modal-department">
+  <div class="modal-window">
+    <div class="modal-header">
+      <h3 class="modal-title">Thêm / Sửa Phòng Ban</h3>
+      <button class="btn-icon" onclick="window.app.closeModal('modal-department')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <form id="form-department" class="form-grid">
+        <input type="hidden" id="dept-id">
+        <div class="form-group">
+          <label>Mã Phòng Ban *</label>
+          <input type="text" id="dept-code" required placeholder="MKT">
+        </div>
+        <div class="form-group">
+          <label>Tên Phòng Ban *</label>
+          <input type="text" id="dept-name" required placeholder="Phòng Kinh Doanh & Marketing">
+        </div>
+        <div class="form-group full-width">
+          <label>Phòng Ban Cha</label>
+          <select id="dept-parent-id"></select>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="window.app.closeModal('modal-department')">Hủy</button>
+      <button class="btn btn-primary" onclick="window.app.saveDepartment()">Lưu Phòng Ban</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: TẠO TIN TUYỂN DỤNG -->
+<div class="modal-backdrop" id="modal-job-posting">
+  <div class="modal-window">
+    <div class="modal-header">
+      <h3 class="modal-title">Tạo Tin Tuyển Dụng</h3>
+      <button class="btn-icon" onclick="window.app.closeModal('modal-job-posting')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <form class="form-grid">
+        <div class="form-group full-width">
+          <label>Tiêu Đề Tin Tuyển Dụng *</label>
+          <input type="text" id="jobpost-title" required placeholder="Tuyển Senior Frontend Engineer">
+        </div>
+        <div class="form-group">
+          <label>Phòng Ban *</label>
+          <select id="jobpost-dept-id" required></select>
+        </div>
+        <div class="form-group">
+          <label>Số Lượng Tuyển *</label>
+          <input type="number" id="jobpost-count" value="1" min="1" required>
+        </div>
+        <div class="form-group">
+          <label>Mức Lương Dự Kiến</label>
+          <input type="text" id="jobpost-salary" placeholder="20.000.000 - 30.000.000 VNĐ">
+        </div>
+        <div class="form-group">
+          <label>Hạn Nộp Hồ Sơ</label>
+          <input type="date" id="jobpost-deadline">
+        </div>
+        <div class="form-group full-width">
+          <label>Mô Tả Công Việc</label>
+          <textarea id="jobpost-desc" placeholder="Chi tiết công việc..."></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="window.app.closeModal('modal-job-posting')">Hủy</button>
+      <button class="btn btn-primary" onclick="window.app.saveJobPosting()">Đăng Tin</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: IN PHIẾU LƯƠNG -->
+<div class="modal-backdrop" id="modal-payslip-view">
+  <div class="modal-window" style="max-width: 650px;">
+    <div class="modal-header">
+      <h3 class="modal-title">Phiếu Lương Chi Tiết Nhân Viên</h3>
+      <button class="btn-icon" onclick="window.app.closeModal('modal-payslip-view')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div id="payslip-print-content" class="payslip-container"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="window.app.closeModal('modal-payslip-view')">Đóng</button>
+      <button class="btn btn-primary" onclick="window.print()">
+        <i class="fa-solid fa-print"></i> In Phiếu Lương
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: TẠO ĐƠN XIN NGHỈ PHÉP -->
+<div class="modal-backdrop" id="modal-leave-request">
+  <div class="modal-window">
+    <div class="modal-header">
+      <h3 class="modal-title">Tạo Đơn Xin Nghỉ Phép</h3>
+      <button class="btn-icon" onclick="window.app.closeModal('modal-leave-request')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <form class="form-grid">
+        <div class="form-group full-width">
+          <label>Nhân Viên *</label>
+          <select id="leave-emp-id" required></select>
+        </div>
+        <div class="form-group">
+          <label>Loại Nghỉ Phép *</label>
+          <select id="leave-type" required>
+            <option value="PHEP_NAM">Phép Năm (Khấu trừ quỹ)</option>
+            <option value="NGHI_OM">Nghỉ Ốm (Giấy CBYT)</option>
+            <option value="KHONG_LUONG">Nghỉ Không Lương</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Số Ngày Nghỉ *</label>
+          <input type="number" step="0.5" id="leave-days" value="1" required>
+        </div>
+        <div class="form-group">
+          <label>Ngày Bắt Đầu *</label>
+          <input type="date" id="leave-start-date" required>
+        </div>
+        <div class="form-group">
+          <label>Ngày Kết Thúc *</label>
+          <input type="date" id="leave-end-date" required>
+        </div>
+        <div class="form-group full-width">
+          <label>Lý Do Xin Nghỉ</label>
+          <textarea id="leave-reason" placeholder="Viết lý do cụ thể..."></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="window.app.closeModal('modal-leave-request')">Hủy</button>
+      <button class="btn btn-primary" onclick="window.app.saveLeaveRequest()">Gửi Đơn</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toast-container"></div>

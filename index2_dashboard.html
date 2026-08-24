@@ -1,0 +1,122 @@
+<!-- ============================================================================
+     INDEX 2: DASHBOARD & REPORT ANALYTICS
+     ============================================================================ -->
+
+<!-- VIEW 0: DASHBOARD -->
+<section id="view-dashboard" class="view-page active">
+  
+  <div class="page-header">
+    <div class="page-title-area">
+      <h2>Báo Cáo Phân Tích Tổng Quan</h2>
+      <p>Thống kê thời gian thực từ View `vw_phan_tich_phong_ban` SQL Server</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary" onclick="window.app.openEmployeeModal()">
+        <i class="fa-solid fa-plus"></i> Thêm Nhân Viên
+      </button>
+    </div>
+  </div>
+
+  <!-- Quick Action Bar -->
+  <div class="quick-actions-bar" style="margin-bottom: 24px;">
+    <div class="quick-action-item" onclick="window.app.openEmployeeModal()">
+      <div class="quick-action-icon"><i class="fa-solid fa-user-plus"></i></div>
+      <div><strong>Thêm Nhân Viên</strong><br><small style="color:var(--text-muted);">Tạo mới hồ sơ nhân sự</small></div>
+    </div>
+    <div class="quick-action-item" onclick="window.app.openJobPostingModal()">
+      <div class="quick-action-icon"><i class="fa-solid fa-bullhorn"></i></div>
+      <div><strong>Tạo Tin Tuyển Dụng</strong><br><small style="color:var(--text-muted);">Thu hút ứng viên mới</small></div>
+    </div>
+    <div class="quick-action-item" onclick="window.app.calculatePayrollCurrentMonth()">
+      <div class="quick-action-icon"><i class="fa-solid fa-calculator"></i></div>
+      <div><strong>Tính Lương Tự Động</strong><br><small style="color:var(--text-muted);">Tính toán phiếu lương tháng</small></div>
+    </div>
+    <div class="quick-action-item" onclick="window.app.openLeaveRequestModal()">
+      <div class="quick-action-icon"><i class="fa-solid fa-calendar-plus"></i></div>
+      <div><strong>Tạo Đơn Nghỉ Phép</strong><br><small style="color:var(--text-muted);">Gửi đơn duyệt phép</small></div>
+    </div>
+  </div>
+
+  <!-- KPI Summary Cards -->
+  <div class="card-grid">
+    <div class="stat-card">
+      <div class="stat-info">
+        <div class="stat-label">Tổng Nhân Viên</div>
+        <div class="stat-value" id="stat-total-employees">0</div>
+        <div class="stat-sub positive"><i class="fa-solid fa-arrow-trend-up"></i> 100% Đang hoạt động</div>
+      </div>
+      <div class="stat-icon indigo"><i class="fa-solid fa-users"></i></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <div class="stat-label">Lương Trung Bình</div>
+        <div class="stat-value" id="stat-avg-salary">0 VNĐ</div>
+        <div class="stat-sub positive"><i class="fa-solid fa-check"></i> Cập nhật theo hợp đồng</div>
+      </div>
+      <div class="stat-icon teal"><i class="fa-solid fa-money-bill-wave"></i></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <div class="stat-label">Tin Tuyển Dụng Đang Mở</div>
+        <div class="stat-value" id="stat-open-jobs">0</div>
+        <div class="stat-sub positive"><i class="fa-solid fa-briefcase"></i> Đang nhận hồ sơ</div>
+      </div>
+      <div class="stat-icon cyan"><i class="fa-solid fa-bullhorn"></i></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <div class="stat-label">Đơn Phép Chờ Duyệt</div>
+        <div class="stat-value" id="stat-pending-leaves">0</div>
+        <div class="stat-sub negative"><i class="fa-solid fa-clock"></i> Cần Quản lý xử lý</div>
+      </div>
+      <div class="stat-icon amber"><i class="fa-solid fa-hourglass-half"></i></div>
+    </div>
+  </div>
+
+  <!-- Visual Analytics Layout -->
+  <div class="dashboard-grid-2">
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <h3>Phân Tích Nhân Sự Theo Phòng Ban</h3>
+        <span class="badge badge-info"><i class="fa-solid fa-database"></i> SQL View: vw_phan_tich_phong_ban</span>
+      </div>
+      <div class="chart-canvas-wrapper">
+        <canvas id="chart-dept-analytics"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <h3>Tỷ Lệ Duyệt Nghỉ Phép</h3>
+      </div>
+      <div class="chart-canvas-wrapper">
+        <canvas id="chart-leave-status"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Department Analytics Table -->
+  <div class="table-card">
+    <div class="table-header-toolbar">
+      <h3>Bảng Dữ Liệu Tổng Hợp (View `vw_phan_tich_phong_ban`)</h3>
+    </div>
+    <div class="custom-table-container">
+      <table class="custom-table" id="table-vw-phan-tich">
+        <thead>
+          <tr>
+            <th>Mã PB</th>
+            <th>Tên Phòng Ban</th>
+            <th>Tổng Nhân Viên</th>
+            <th>Đang Làm Việc</th>
+            <th>Lương Cơ Bản Trung Bình</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+</section>

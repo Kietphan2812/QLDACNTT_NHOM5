@@ -3,12 +3,12 @@
 # ============================================================================
 
 $listener = New-Object System.Net.HttpListener
-$listener.Prefixes.Add("http://localhost:8080/")
+$listener.Prefixes.Add("http://localhost:8088/")
 $listener.Start()
 
 Write-Host "==========================================================" -ForegroundColor Cyan
-Write-Host "HRMASTER PRO WEB FILE SERVER IS RUNNING ON PORT 8080" -ForegroundColor Green
-Write-Host "Access in browser: http://localhost:8080/" -ForegroundColor Yellow
+Write-Host "HRMASTER PRO WEB FILE SERVER IS RUNNING ON PORT 8088" -ForegroundColor Green
+Write-Host "Access in browser: http://localhost:8088/" -ForegroundColor Yellow
 Write-Host "==========================================================" -ForegroundColor Cyan
 
 $root = "c:\Users\DELL\Desktop\QLDACNTT"

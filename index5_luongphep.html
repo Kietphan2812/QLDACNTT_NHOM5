@@ -1,0 +1,190 @@
+<!-- ============================================================================
+     INDEX 5: KPI / OKR, KỲ & PHIẾU LƯƠNG & QUẢN LÝ NGHỈ PHÉP
+     ============================================================================ -->
+
+<!-- VIEW 3: KPI / OKR -->
+<section id="view-kpi-objectives" class="view-page">
+  <div class="page-header">
+    <div class="page-title-area">
+      <h2>Đánh Giá Hiệu Suất KPI / OKR (`chu_ky_danh_gia`, `muc_tieu_danh_gia`, `ket_qua_danh_gia`)</h2>
+      <p>Thiết lập chỉ tiêu mục tiêu, tự đánh giá và quản lý phê duyệt điểm chính thức</p>
+    </div>
+  </div>
+
+  <div class="dashboard-grid-2">
+    <div class="table-card">
+      <div class="table-header-toolbar">
+        <h3>Danh Sách Mục Tiêu KPI / OKR Nhân Viên</h3>
+      </div>
+      <div class="custom-table-container">
+        <table class="custom-table" id="table-kpi-objectives">
+          <thead>
+            <tr>
+              <th>Nhân Viên</th>
+              <th>Loại</th>
+              <th>Tiêu Đề Mục Tiêu</th>
+              <th>Trọng Số</th>
+              <th>Thực Tế / Chỉ Tiêu</th>
+              <th>Tiến Độ %</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header-toolbar">
+        <h3>Kết Quả Đánh Giá Tổng Kết</h3>
+      </div>
+      <div class="custom-table-container">
+        <table class="custom-table" id="table-kpi-results">
+          <thead>
+            <tr>
+              <th>Nhân Viên</th>
+              <th>Tự Đánh Giá</th>
+              <th>Điểm Chính Thức</th>
+              <th>Trạng Thái</th>
+              <th>Thao Tác</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIEW 4: PHIẾU LƯƠNG & LƯƠNG HỢP ĐỒNG -->
+<section id="view-payroll-slips" class="view-page">
+  <div class="page-header">
+    <div class="page-title-area">
+      <h2>Quản Lý Lương Thưởng & Phiếu Lương (`ky_tinh_luong`, `phieu_luong`, `luong_hop_dong`)</h2>
+      <p>Tự động tính Gross -> BHXH -> Thuế TNCN -> Thực Nhận và in Phiếu lương</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-success" onclick="window.app.calculatePayrollCurrentMonth()">
+        <i class="fa-solid fa-calculator"></i> Tự Động Tính Lương Tháng Hiện Tại
+      </button>
+    </div>
+  </div>
+
+  <div class="tabs-header">
+    <div class="tab-item active" data-tab="tab-payroll-slips">Bảng Phiếu Lương Định Kỳ</div>
+    <div class="tab-item" data-tab="tab-payroll-contracts">Cấu Hình Lương Hợp Đồng</div>
+  </div>
+
+  <div id="tab-payroll-slips" class="tab-content">
+    <div class="table-card">
+      <div class="table-header-toolbar">
+        <div class="table-filter-group">
+          <select class="form-select" id="filter-payroll-period" onchange="window.app.renderPayrollTable()"></select>
+        </div>
+      </div>
+      <div class="custom-table-container">
+        <table class="custom-table" id="table-payroll-slips">
+          <thead>
+            <tr>
+              <th>Mã NV</th>
+              <th>Họ & Tên</th>
+              <th>Lương Gross</th>
+              <th>Thưởng</th>
+              <th>Phụ Cấp</th>
+              <th>BHXH (10.5%)</th>
+              <th>Thuế TNCN</th>
+              <th>Lương Thực Nhận</th>
+              <th>In Phiếu</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-payroll-contracts" class="tab-content" style="display: none;">
+    <div class="table-card">
+      <div class="custom-table-container">
+        <table class="custom-table" id="table-payroll-contracts">
+          <thead>
+            <tr>
+              <th>Mã NV</th>
+              <th>Họ Tên Nhân Viên</th>
+              <th>Phòng Ban</th>
+              <th>Lương Cơ Bản Hợp Đồng</th>
+              <th>Ngày Áp Dụng</th>
+              <th>Loại Tiền</th>
+              <th>Thao Tác</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIEW 5: QUẢN LÝ NGHỈ PHÉP -->
+<section id="view-leave-requests" class="view-page">
+  <div class="page-header">
+    <div class="page-title-area">
+      <h2>Quản Lý Nghỉ Phép (`quy_phep_nam`, `don_xin_nghi_phep`)</h2>
+      <p>Tạo đơn xin nghỉ phép, theo dõi quỹ 12 ngày phép năm và duyệt đơn nghỉ</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary" onclick="window.app.openLeaveRequestModal()">
+        <i class="fa-solid fa-calendar-plus"></i> Tạo Đơn Xin Nghỉ Phép
+      </button>
+    </div>
+  </div>
+
+  <div class="tabs-header">
+    <div class="tab-item active" data-tab="tab-leave-requests">Danh Sách Đơn Xin Nghỉ Phép</div>
+    <div class="tab-item" data-tab="tab-leave-balances">Quỹ Phép Năm Nhân Viên</div>
+  </div>
+
+  <div id="tab-leave-requests" class="tab-content">
+    <div class="table-card">
+      <div class="custom-table-container">
+        <table class="custom-table" id="table-leave-requests">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nhân Viên</th>
+              <th>Loại Phép</th>
+              <th>Ngày Bắt Đầu</th>
+              <th>Ngày Kết Thúc</th>
+              <th>Số Ngày</th>
+              <th>Lý Do</th>
+              <th>Trạng Thái</th>
+              <th>Người Duyệt</th>
+              <th>Thao Tác</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-leave-balances" class="tab-content" style="display: none;">
+    <div class="table-card">
+      <div class="custom-table-container">
+        <table class="custom-table" id="table-leave-balances">
+          <thead>
+            <tr>
+              <th>Mã NV</th>
+              <th>Họ & Tên</th>
+              <th>Năm</th>
+              <th>Tổng Phép Năm</th>
+              <th>Phép Năm Đã Dùng</th>
+              <th>Phép Ốm Đã Dùng</th>
+              <th>Phép Còn Lại</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
